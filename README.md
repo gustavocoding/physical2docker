@@ -3,7 +3,7 @@
 Instructions to convert an existing physical Linux Fedora server to a docker container. Why? 
 Useful to test an existing rsync backup and to actually replace a physical server in case 
 of an emergency. This procedure enables ```systemd``` suport inside the docker image, so that
-you can run multiple processes inside the container.
+it can run multiple processes inside the container.
 
 ### Step 1: Full backup of existing server
 
@@ -12,7 +12,7 @@ Plug and mount external storage to the physical server with enough capacity to h
 Run the following command as ```root``` to create a full copy of the filesystem:
 
 ```
-rsync -aAXv --info=progress2 / --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/external-backup
+rsync -aAXv --info=progress2 / --exclude={"/dev/*","/proc/*","/sys/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/external-backup
 ```
 
 Where ```/mnt/external-backup``` is where the external disk is mounted.
@@ -29,7 +29,7 @@ Plug and mount the external drive with the backup to another computer, and follo
 
 ```
 git checkout gustavonalle/physical2docker && cd physical2docker
-cp -R /mnt/external-backup physical2docker/backup
+rsync -aAXv --info=progress2 /mnt/external-backup backup/
 ```
 
 ### Step 3: Create the image 
