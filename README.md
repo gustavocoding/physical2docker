@@ -7,7 +7,7 @@ it can run multiple processes inside the container.
 
 ### Step 1: Full backup of existing server
 
-Plug and mount external storage to the physical server with enough capacity to hold all non free space of the server.
+Plug and mount external storage to the physical server with enough capacity to hold all non-free space of the server.
 
 Run the following command as ```root``` to create a full copy of the filesystem:
 
@@ -42,7 +42,7 @@ containers. Follow https://docs.docker.com/install/linux/docker-ce/fedora/ to in
 #### Check Docker disk space 
 
 Before proceeding, check if docker has enough space to hold the image. It usually store images in ```/var/lib/docker/``` which 
-resides in the ```/``` partition that will probably be small. If not enough space is available:
+usually resides in the ```/``` partition that will probably be small. If not enough space is available:
 
 * Stop the docker service
 * Move the contents of ```/var/lib/docker/``` to another partition
@@ -51,12 +51,12 @@ resides in the ```/``` partition that will probably be small. If not enough spac
 
 #### (Optional) Adjust users and permissions
 
-The docker assumes the backup contains a user called 'bitcoin' and changes the permission 
+The ```Dockerfile``` assumes the backup contains a user called 'bitcoin' and changes the permission 
 of its home folder. You may need to comment that line or add adjust it to your scenario.
 
-#### (Optional) Ignore files or directory
+#### (Optional) Ignore files or directories
 
-Use the file ```.dockerignore``` to ignore folders/files from the backup when building the image. This is useful for large folders that are better suited to be attached as volumes to the container rather than be part of the image itself. Example, if your server includes a blockchain or a database with large quantities of data, this will bloat considerably the image and will requre plenty of temporaty space to build the image. 
+Use the file ```.dockerignore``` to ignore folders/files from the backup when building the image. This is useful for large folders that are better suited to be attached as volumes to the container rather than be part of the image itself. Example, if your server includes a blockchain or a database with large quantities of data, this will bloat considerably the image and will require plenty of temporaty space to build the image.
 
 #### Build the image
 
@@ -74,8 +74,10 @@ Note: It is possible to run a systemd enabled container with Selinux enabled; I 
 Run the container:
 
 ```
-docker run --name container-name --privileged --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro -td image_name
+docker run --name container-name --privileged --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /path/to/large_dir:/path/inside/container -td image_name
 ```
+
+The last part ```-v /path/to/large_dir:/path/inside/container``` is optional, it's used when some of the backup files were ignored at build time, to be mounted later as a volume.
 
 The container will run on the background, with support for systemd.
 
