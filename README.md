@@ -17,7 +17,7 @@ rsync -aAXv --info=progress2 / --exclude={"/dev/*","/proc/*","/sys/*","/run/*","
 
 Where ```/mnt/external-backup``` is where the external disk is mounted.
 
-The advantage of using rsync to do a full backup are plenty: 
+The advantages of using rsync to do a full backup are plenty: 
 * rsync preserves file permissions and symlinks
 * rsync allows incremental backups
 * rsync will just backup the used space instead of the full partition size like other methods of image creation like ```dd```
@@ -39,7 +39,7 @@ rsync -aAXv --info=progress2 /mnt/external-backup backup/
 Make sure to use a recent Docker version. Fedora 27 ships with an older version that has issues with privileged and systemd enabled
 containers. Follow https://docs.docker.com/install/linux/docker-ce/fedora/ to install the latest stable version.
 
-#### Check docker disk space 
+#### Check Docker disk space 
 
 Before proceeding, check if docker has enough space to hold the image. It usually store images in ```/var/lib/docker/``` which 
 resides in the ```/``` partition that will probably be small. If not enough space is available:
@@ -49,13 +49,16 @@ resides in the ```/``` partition that will probably be small. If not enough spac
 * Create a symlink to the new location: ```ln -s /path/to/new/docker/folder /var/lib/docker/```
 * Start docker
 
-#### Adjust users and permissions
+#### (Optional) Adjust users and permissions
 
 The docker assumes the backup contains a user called 'bitcoin' and changes the permission 
 of its home folder. You may need to comment that line or add adjust it to your scenario.
 
-#### Build the image
+#### (Optional) Ignore files or directory
 
+Use the file ```.dockerignore``` to ignore folders/files from the backup when building the image. This is useful for large folders that are better suited to be attached as volumes to the container rather than be part of the image itself. Example, if your server includes a blockchain or a database with large quantities of data, this will bloat considerably the image and will requre plenty of temporaty space to build the image. 
+
+#### Build the image
 
 ```
 docker build -t image_name  .
@@ -71,7 +74,7 @@ Note: It is possible to run a systemd enabled container with Selinux enabled; I 
 Run the container:
 
 ```
-docker run --name container-name --privileged --tmpfs /run --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:ro -td image_name
+docker run --name container-name --privileged --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro -td image_name
 ```
 
 The container will run on the background, with support for systemd.
