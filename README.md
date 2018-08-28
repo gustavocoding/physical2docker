@@ -1,4 +1,4 @@
-## Dockerization of physical Fedora 27 servers 
+## Dockerization of physical Fedora 28 servers 
 
 Instructions to convert an existing physical Linux Fedora server to a docker container. Why? 
 Useful to test an existing rsync backup and to actually replace a physical server in case 
@@ -12,7 +12,7 @@ Plug and mount external storage to the physical server with enough capacity to h
 Run the following command as ```root``` to create a full copy of the filesystem:
 
 ```
-rsync -aAXv --info=progress2 / --exclude={"/dev/*","/proc/*","/sys/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/external-backup
+rsync -aAXv --info=progress2 --delete / --exclude={"/dev/*","/proc/*","/sys/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/external-backup
 ```
 
 Where ```/mnt/external-backup``` is where the external disk is mounted.
@@ -36,7 +36,7 @@ rsync -aAXv --info=progress2 /mnt/external-backup backup/
 
 #### Check Docker version
 
-Make sure to use a recent Docker version. Fedora 27 ships with an older version that has issues with privileged and systemd enabled
+Make sure to use a recent Docker version. Fedora 28 ships with an older version that has issues with privileged and systemd enabled
 containers. Follow https://docs.docker.com/install/linux/docker-ce/fedora/ to install the latest stable version.
 
 #### Check Docker disk space 
@@ -91,7 +91,7 @@ Replace the user and the shell if necessary.
 
 
 
-Presto! A container with an exact copy of the physical server. Although this procedure is for Fedora 27, it should work fine for 
+Presto! A container with an exact copy of the physical server. Although this procedure is for Fedora 28, it should work fine for 
 other distros, provided the Dockerfile extends the same base image as before.
 
 If this procedure help you, consider donating any amount to ```bc1qf5ndupggeqtpk5gf4leh4vcxecxakw067hel0z``` as a token of appreciation!

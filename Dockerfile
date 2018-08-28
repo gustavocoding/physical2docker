@@ -1,4 +1,4 @@
-FROM fedora:27
+FROM fedora:28
 
 # The rsync contents should be copied to the image/ folder where this Dockerfile resides
 COPY backup/ /
