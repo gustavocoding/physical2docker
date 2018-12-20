@@ -18,3 +18,6 @@ rm /etc/fstab;
 VOLUME [ "/sys/fs/cgroup" ] 
 
 CMD ["/usr/sbin/init"]
+
+
+EXPOSE 8333 8332
