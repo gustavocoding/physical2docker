@@ -44,7 +44,7 @@ possible to create a base image comprising of only the base OS files and leave a
 The Dockerfile can be found at:
 
 ```
-git checkout gustavonalle/physical2docker && cd physical2docker
+git clone https://github.com/gustavonalle/physical2docker.git && cd physical2docker
 ```
 
 #### Check Docker version
