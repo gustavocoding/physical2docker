@@ -1,10 +1,7 @@
-FROM fedora:28
+FROM base_image
 
-# The rsync contents should be copied to the image/ folder where this Dockerfile resides
-COPY backup/ /
-
-# Enable systemd in the container, and change permissions:
-RUN chown -R bitcoin.bitcoin /home/bitcoin && (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \ 
+# Enable systemd in the container:
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
 rm -f /lib/systemd/system/multi-user.target.wants/*;\
 rm -f /etc/systemd/system/*.wants/*;\
 rm -f /lib/systemd/system/local-fs.target.wants/*; \
@@ -19,5 +16,4 @@ VOLUME [ "/sys/fs/cgroup" ]
 
 CMD ["/usr/sbin/init"]
 
-
-EXPOSE 8333 8332
+EXPOSE 8333 8332 9130
