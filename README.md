@@ -1,4 +1,4 @@
-## Dockerization of physical Fedora 28 servers 
+## Dockerization of physical Fedora 31 servers 
 
 Instructions to convert an existing physical Linux Fedora server to a docker container. Why? 
 Useful to test an existing rsync backup and to actually replace a physical server in case 
@@ -33,7 +33,7 @@ export MOUNT_DIR=/path/to/backup
 
 The command below will import the backup files as a docker base image:
 ```
-tar --exclude='*/.bitcoin/indexes' --exclude='*/chainstate' --exclude='*/blocks' --exclude='*/blockbook/data' -cC $MOUNT_DIR . | docker import - base_image 
+tar --exclude='home/data/*' --exclude='*/chainstate' -cC $MOUNT_DIR . | docker import - base_image 
 ```
 
 The several 'exclude' params should be used in case there is not enough space in the destination computer to run the full backup. In this case, it is 
@@ -96,7 +96,7 @@ docker exec -it container-name zsh
 ```
 
 
-Presto! A container with an exact copy of the physical server. Although this procedure is for Fedora 28, it should work fine for 
+Presto! A container with an exact copy of the physical server. Although this procedure is for Fedora 31, it should work fine for 
 other distros, provided the Dockerfile extends the same base image as before.
 
 If this procedure help you, consider donating any amount to ```bc1qf5ndupggeqtpk5gf4leh4vcxecxakw067hel0z``` as a token of appreciation!
